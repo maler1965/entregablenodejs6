@@ -1,23 +1,17 @@
 const catchAsync = require('../utils/catchAsync');
 const { Restaurant, postStatus } = require('../models/restaurants.model');
-//const { Op } = require('sequelize');
 
 exports.findAllRestaurant = catchAsync(async (req, res, next) => {
-  // const { initDate, endDate } = req.query;
-
-  const comments = await Restaurant.findAll({
+  const restaurants = await Restaurant.findAll({
     where: {
-      status: postStatus.active, //true,
-      // createdAt: {
-      //   [Op.between]: [initDate, endDate],
-      // },
+      status: postStatus.active,
     },
   });
 
   return res.status(200).json({
     status: 'success',
-    results: comments.length,
-    comments,
+    results: restaurants.length,
+    restaurants,
   });
 });
 
@@ -35,61 +29,31 @@ exports.findUserRestaurant = catchAsync(async (req, res, next) => {
   return res.status(200).json({
     status: 'success',
     results: fields.rowCount,
-    posts: rows,
+    restaurants: rows,
   });
 });
 
 exports.findMyRestaurant = catchAsync(async (req, res, next) => {
   const { id } = req.sessionUser;
 
-  const posts = await Post.findAll({
+  const restaurants = await Restaurant.findAll({
     where: {
-      status: postStatus.active, //postStatus.disabled
+      status: postStatus.active,
       userId: id,
     },
-    include: [
-      {
-        model: PostImg,
-      },
-    ],
   });
-
-  if (posts.length > 0) {
-    const postPromises = posts.map(async (post) => {
-      const postImgsPromises = post.PostImgs.map(async (postImg) => {
-        const imgRef = ref(storage, postImg.postImgUrl);
-        const url = await getDownloadURL(imgRef);
-
-        postImg.postImgUrl = url;
-        return postImg;
-      });
-
-      const postImgsResolved = await Promise.all(postImgsPromises);
-      post.PostImgs = postImgsResolved;
-
-      return post;
-    });
-
-    await Promise.all(postPromises);
-  }
 
   return res.status(200).json({
     status: 'success',
-    results: posts.length,
-    posts,
+    results: restaurants.length,
+    restaurants,
   });
 });
 
-//name, address, rating (INT)
 exports.createRestaurant = catchAsync(async (req, res, next) => {
   const { name, address, rating } = req.body;
 
-  //console.log({ name });
-  //const  uId =  req.sessionUser.id; //{ id: userId } = req.sessionUser; //
-
-  const restaurant = await Restaurant.create({ name, address, rating }); //userId: uId
-
-  //console.log({ restaurant });
+  const restaurant = await Restaurant.create({ name, address, rating });
 
   return res.status(201).json({
     status: 'success',

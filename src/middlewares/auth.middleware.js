@@ -59,9 +59,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   //6. Adjuntar el usuario en session
   req.sessionUser = user;
-
-  const { sessionUser } = req;
-  console.log('Pedro1', sessionUser);
   next();
 });
 
@@ -78,9 +75,8 @@ exports.protectAccountOwner = (req, res, next) => {
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     const { sessionUser } = req;
-    //console.log('Pedro', sessionUser.role);
+
     if (!roles.includes(sessionUser.role)) {
-      //req.sessionUser.role
       return next(
         new AppError('You do not have permission to perform this action.', 403)
       );

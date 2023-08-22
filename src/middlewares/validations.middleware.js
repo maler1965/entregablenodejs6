@@ -20,13 +20,6 @@ exports.updateUserValidation = [
     .withMessage('Email is required')
     .isEmail()
     .withMessage('Email must be a correct format'),
-  /*
-  body('description')
-    .notEmpty()
-    .withMessage('Description is required')
-    .isLength({ min: 10 })
-    .withMessage('Description must be at least 10 characters long'),
-    */
   validFields,
 ];
 
@@ -41,9 +34,8 @@ exports.createUserValidation = [
     .isLength({ min: 8 })
     .withMessage('Password must have a least 8 characters')
     .matches(/[a-zA-Z]/)
-    .withMessage('Password must have cotain a least one letter'), //
-  body('role').notEmpty().withMessage('role is required'),
-  //body('description').notEmpty().withMessage('Description is required'),
+    .withMessage('Password must have cotain a least one letter'),
+  body('role').notEmpty().withMessage('Role is required'),
   validFields,
 ];
 
@@ -75,7 +67,6 @@ exports.updatePasswordValidation = [
   validFields,
 ];
 
-//name, address, rating (INT)  //comment, rating
 exports.createRestaurantValidation = [
   body('name').notEmpty().withMessage('Name is required'),
   body('address').notEmpty().withMessage('Address is required'),
@@ -92,7 +83,6 @@ exports.createRestaurantValidation = [
   validFields,
 ];
 
-//comment, rating (INT)
 exports.createReviewValidation = [
   body('comment').notEmpty().withMessage('Comment is required'),
   body('rating')
@@ -107,50 +97,25 @@ exports.createReviewValidation = [
     }),
   validFields,
 ];
-//name, price (INT)
+
 exports.createMealValidation = [
   body('name').notEmpty().withMessage('Name is required'),
   body('price').notEmpty().withMessage('Price is required'),
-  /*
-    .custom((value) => {
-      const rating = parseInt(value);
-      if (isNaN(rating) || rating < 1 || rating > 5) {
-        throw new Error('Rating must be a number between 1 and 5');
-      }
-      return true;
-    }) */
   validFields,
 ];
 
 exports.createOrderValidation = [
   body('quantity').notEmpty().withMessage('Quantity is required'),
   body('mealId').notEmpty().withMessage('MealId is required'),
-  /*
-    .custom((value) => {
-      const rating = parseInt(value);
-      if (isNaN(rating) || rating < 1 || rating > 5) {
-        throw new Error('Rating must be a number between 1 and 5');
-      }
-      return true;     quantity y mealId 
-    }) */
   validFields,
 ];
 
 exports.updateMealValidation = [
   body('name').notEmpty().withMessage('Name is required'),
   body('price').notEmpty().withMessage('Price is required'),
-  /*
-    .custom((value) => {
-      const rating = parseInt(value);
-      if (isNaN(rating) || rating < 1 || rating > 5) {
-        throw new Error('Rating must be a number between 1 and 5');
-      }
-      return true;
-    }) */
   validFields,
 ];
 
-//updateReviewValidation
 exports.updateReviewValidation = [
   body('comment').notEmpty().withMessage('Comment is required'),
   body('rating')
@@ -166,19 +131,7 @@ exports.updateReviewValidation = [
   validFields,
 ];
 
-exports.createCommentValidation = [
-  body('text').notEmpty().withMessage('Text is required'),
-  body('postId').notEmpty().withMessage('PostId is required'),
-  validFields,
-];
-
 exports.updateRestaurantValidation = [
-  body('name').notEmpty().withMessage('Name is required'),
-  body('address').notEmpty().withMessage('Address is required'),
-  validFields,
-];
-
-exports.updateCommentValidation = [
   body('name').notEmpty().withMessage('Name is required'),
   body('address').notEmpty().withMessage('Address is required'),
   validFields,

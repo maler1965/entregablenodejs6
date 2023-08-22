@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { db } = require('../database/config');
 
-const Meal = db.define('mealsN', {
+const Meal = db.define('meals', {
   id: {
     primaryKey: true,
     allowNull: false,

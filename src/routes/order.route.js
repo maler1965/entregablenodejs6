@@ -1,57 +1,30 @@
 const express = require('express');
 
 //controllers
-//const restaurantController = require('../controllers/restaurant.controller');
 const orderController = require('../controllers/orders.controller');
 
 //middlewares
 const authMiddleware = require('../middlewares/auth.middleware');
 const validationMiddleware = require('../middlewares/validations.middleware');
-//const restaurantMiddleware = require('../middlewares/restaurant.middleware');
 const orderMiddleware = require('../middlewares/order.middleware');
-
-//const upload = require('../utils/multer');  validReview
 
 const router = express.Router();
 
 router
-  .route('/') //.get(orderController.findAllOrder)
+  .route('/')
   .post(
-    //L
     authMiddleware.protect,
-    //authMiddleware.restrictTo('admin'),
     validationMiddleware.createOrderValidation,
     orderController.createOrder
   );
 
-router.use(authMiddleware.protect); //L
+router.use(authMiddleware.protect);
 
-router.get('/me', orderController.findMyOrders); //L
-
-/*
-router.get(
-  '/profile/:id',
-  userMiddleware.validUser,
-  restaurantController.findUserRestaurant
-);
-*/
+router.get('/me', orderController.findMyOrders);
 
 router
   .route('/:id')
-
-  .patch(
-    //L
-    // authMiddleware.restrictTo('admin'),
-    orderMiddleware.validOrder,
-    // validationMiddleware.updateOrderValidation,
-    //authMiddleware.protectAccountOwner,
-    orderController.updateOrder
-  )
-  .delete(
-    //authMiddleware.restrictTo('admin'),
-    orderMiddleware.validOrder,
-    //authMiddleware.protectAccountOwner,
-    orderController.deleteOrder
-  );
+  .patch(orderMiddleware.validOrder, orderController.updateOrder)
+  .delete(orderMiddleware.validOrder, orderController.deleteOrder);
 
 module.exports = router;
